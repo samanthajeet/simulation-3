@@ -17,7 +17,10 @@ massive(MASSIVE_STRING).then( db => {
 })
 
 
-//endpoints
-
+// AUTH endpoints
 app.post('/auth/register', ctrl.register);
 app.post('/auth/login', ctrl.login)
+
+// POST endpoints
+app.get('/posts/allPosts/:id', ctrl.getAllPosts)
+app.get('/posts/searchPosts', ctrl.searchAllPosts)

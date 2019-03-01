@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import Post from '../Post/Post'
+import Post from '../Post/Post';
+import {connect} from 'react-redux';
+import axios from 'axios';
 
 class Dahsboard extends Component {
   constructor(props){
@@ -7,10 +9,52 @@ class Dahsboard extends Component {
     this.state= {
       myPosts: true,
       chkbox: true,
-      posts: [{postTitle: 'Title', username: 'username', user_image: 'img', message: 'message1'},
-      {postTitle: 'Title', username: 'username', user_image: 'img', message: 'message2'}]
+      id: 0,
+      search: '',
+      posts: []
     }
   }
+
+
+  componentDidMount(){
+    this.getPosts()
+    this.updateUserId()
+  }
+
+  updateUserId(){
+    if(this.state.myPosts){
+      this.setState({
+        id: this.props.id
+      }) 
+    } else {
+      this.setState({
+        id: 0
+      })
+    }
+  }
+
+  getPosts(){
+    const {id} = this.state
+    axios.get(`/posts/allPosts/${id}`).then( response =>{
+      this.setState({
+        posts: response.data
+      })
+    })
+  }
+
+  searchPosts =() =>{
+    console.log(this.state.search)
+    axios.get(`/posts/searchPosts?search=${this.state.search}`).then( response => {
+      this.setState({
+        posts: response.data
+      })
+    })
+  }
+
+  reset = () => {
+    this.getPosts()
+  }
+
 
   handleMyPosts = () =>{
     this.setState({
@@ -18,27 +62,34 @@ class Dahsboard extends Component {
     })
   }
 
+  handleInput = (prop, val) => {
+    this.setState({
+      [prop] :val
+    })
+  }
+
   render() { 
     const mappedPosts = this.state.posts.map( post => {
       return (
-        <Post
-          key={post.post}
-          title={post.title}
-          username={post.username}
-          message={post.message}
-        />
+          <div key={post.post} style={{"border": "1px solid pink", "margin": 2}} >
+          <h2>{post.post_title}</h2>
+          <h5>{post.username}</h5>
+          <img src={post.user_image} alt={this.props.username} style={{"width": 50}} />
+          <p>{post.post}</p>
+          </div>
       )
     })
-    console.log(this.state)
+
     return ( 
       <div>
         <h1>Dashboard Component</h1>
         <input 
+          onChange={(e) => this.handleInput('search', e.target.value)}
           placeholder="search"
         />
 
-        <button>Search</button>
-        <button>Reset</button>
+        <button onClick={this.searchPosts} >Search</button>
+        <button onClick={this.reset} >Reset</button>
         <input 
           type="checkbox"
           value={true}
@@ -53,5 +104,12 @@ class Dahsboard extends Component {
      );
   }
 }
+
+const mapStateToProps = (reduxState) => {
+  const {id} = reduxState
+  return{
+    id
+  }
+}
  
-export default Dahsboard;
+export default connect(mapStateToProps)(Dahsboard);
