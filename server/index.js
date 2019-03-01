@@ -19,4 +19,5 @@ massive(MASSIVE_STRING).then( db => {
 
 //endpoints
 
-app.post('/auth/register', ctrl.register)
+app.post('/auth/register', ctrl.register);
+app.post('/auth/login', ctrl.login)

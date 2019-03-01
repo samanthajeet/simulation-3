@@ -22,6 +22,13 @@ class Auth extends Component {
       this.props.history.push('/dashboard')
     })
   }
+
+  login = () => {
+    const {username, password} = this.state
+    axios.post('/auth/login', {username, password}).then( response => {
+      this.props.history.push('/dashboard')
+    })
+  }
   
   render() { 
     const {username, password} = this.state
@@ -44,7 +51,7 @@ class Auth extends Component {
 
 
         <button onClick={this.register} >Sign Up</button>
-        <button>Login</button>
+        <button onClick={this.login} >Login</button>
       </div>
      );
   }
