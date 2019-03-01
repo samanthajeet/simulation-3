@@ -25,11 +25,31 @@ module.exports = {
   
   getAllPosts: (req, res) => {
     const db = req.app.get('db')
+    const {id} = req.params
+    // if(id) {
+    //   db.posts_excluding_auth({id}).then( post => {
+    //     return res.status(200).send(post)
+    //   })
+    // }
 
     db.get_posts().then(post => {
       res.status(200).send(post)
     })
+
   },
+
+  getPost: (req, res) => {
+    const {post_id} = req.params;
+    const db = req.app.get('db')
+
+    db.get_post({post_id}).then( post => {
+      res.status(200).send(post[0])
+      console.log(post)
+    }).catch(err => {
+      res.status(500).send(err);
+    });
+  },
+
 
   searchAllPosts: (req, res) => {
     const db = req.app.get('db')

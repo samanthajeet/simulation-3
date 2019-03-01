@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Post from '../Post/Post';
 import {connect} from 'react-redux';
 import axios from 'axios';
+import {Link} from 'react-router-dom'
 
 class Dahsboard extends Component {
   constructor(props){
@@ -18,31 +19,35 @@ class Dahsboard extends Component {
 
   componentDidMount(){
     this.getPosts()
-    this.updateUserId()
+
   }
 
-  updateUserId(){
-    if(this.state.myPosts){
-      this.setState({
-        id: this.props.id
-      }) 
-    } else {
-      this.setState({
-        id: 0
-      })
-    }
-  }
 
   getPosts(){
-    const {id} = this.state
-    axios.get(`/posts/allPosts/${id}`).then( response =>{
+    axios.get(`/posts/allPosts`).then( response => {
       this.setState({
         posts: response.data
       })
     })
+    
+    // if(this.myPosts){
+    //   axios.get(`/posts/allPosts/`).then( response =>{
+    //     this.setState({
+    //       posts: response.data
+    //     })
+    //   })
+    // } else {
+    //   const {id} = this.props
+    //   axios.get(`/posts/allPosts/${id}`).then( response => {
+    //     this.setState({
+    //       posts: response.data
+    //     })
+    //   })
+    // }
   }
 
-  searchPosts =() =>{
+
+  searchPosts =() => {
     console.log(this.state.search)
     axios.get(`/posts/searchPosts?search=${this.state.search}`).then( response => {
       this.setState({
@@ -57,6 +62,8 @@ class Dahsboard extends Component {
 
 
   handleMyPosts = () =>{
+    this.getPosts()
+
     this.setState({
       myPosts: !this.state.myPosts
     })
@@ -70,12 +77,14 @@ class Dahsboard extends Component {
 
   render() { 
     const mappedPosts = this.state.posts.map( post => {
+      console.log(post)
       return (
           <div key={post.post} style={{"border": "1px solid pink", "margin": 2}} >
-          <h2>{post.post_title}</h2>
-          <h5>{post.username}</h5>
-          <img src={post.user_image} alt={this.props.username} style={{"width": 50}} />
-          <p>{post.post}</p>
+            <h2>{post.post_title}</h2>
+            <h5>{post.username}</h5>
+            <img src={post.user_image} alt={this.props.username} style={{"width": 50}} />
+            <p>{post.post}</p>
+            <Link to={`/posts/${post.post_id}`}> Detail</Link>
           </div>
       )
     })
