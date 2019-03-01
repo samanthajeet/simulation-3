@@ -16,6 +16,7 @@ module.exports = {
 
     let user = await db.check_user({username, password})
     user = user[0]
+    console.log(user)
     if (!user) {
       return res.sendStatus(409)
     }
