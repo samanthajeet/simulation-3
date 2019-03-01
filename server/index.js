@@ -13,6 +13,10 @@ app.use(express.json())
 
 massive(MASSIVE_STRING).then( db => {
   app.set('db', db);
+  app.listen(SERVER_PORT, () => {console.log(`Bingpot on port ${SERVER_PORT}`)})
 })
 
-app.listen(SERVER_PORT, () => {console.log(`Bingpot on port ${SERVER_PORT}`)})
+
+//endpoints
+
+app.post('/auth/register', ctrl.register)
