@@ -23,5 +23,5 @@ app.post('/auth/login', ctrl.login)
 
 // POST endpoints
 app.get('/posts/allPosts', ctrl.getAllPosts)
-app.get(`/posts/:post_id`, ctrl.getPost)
 app.get('/posts/searchPosts', ctrl.searchAllPosts)
+app.get(`/posts/:post_id`, ctrl.getPost)

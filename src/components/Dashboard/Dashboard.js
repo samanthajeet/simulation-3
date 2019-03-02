@@ -48,7 +48,7 @@ class Dahsboard extends Component {
 
 
   searchPosts =() => {
-    console.log(this.state.search)
+    console.log('searching for', this.state.search)
     axios.get(`/posts/searchPosts?search=${this.state.search}`).then( response => {
       this.setState({
         posts: response.data
@@ -77,12 +77,13 @@ class Dahsboard extends Component {
 
   render() { 
     const mappedPosts = this.state.posts.map( post => {
-      console.log(post)
       return (
           <div key={post.post} style={{"border": "1px solid pink", "margin": 2}} >
             <h2>{post.post_title}</h2>
-            <h5>{post.username}</h5>
-            <img src={post.user_image} alt={this.props.username} style={{"width": 50}} />
+            <div style={{"display": "flex","alignItems": "center", "justifyContent": "center"}} >
+              <h5>{post.username}</h5>
+              <img src={post.user_image} alt={this.props.username} style={{"width": 50, "borderRadius": "50%", "marginLeft": 5}} />
+            </div>
             <p>{post.post}</p>
             <Link to={`/posts/${post.post_id}`}> Detail</Link>
           </div>

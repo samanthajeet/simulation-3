@@ -28,8 +28,10 @@ class Post extends Component {
       <div>
         <h1>Post Component</h1>
         <h2>{post.post_title}</h2>
-        <h5>{post.username}</h5>
-        <img src={post.user_image} alt={this.props.username} style={{"width": 50}} />
+        <div style={{"display": "flex","alignItems": "center", "justifyContent": "center"}}>
+          <h5>{post.username}</h5>
+          <img src={post.user_image} alt={this.props.username} style={{"width": 50, "borderRadius": "50%", "marginLeft": 5}} />
+        </div>
 
         <p>{post.post}</p>
 

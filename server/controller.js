@@ -44,7 +44,6 @@ module.exports = {
 
     db.get_post({post_id}).then( post => {
       res.status(200).send(post[0])
-      console.log(post)
     }).catch(err => {
       res.status(500).send(err);
     });
@@ -52,12 +51,18 @@ module.exports = {
 
 
   searchAllPosts: (req, res) => {
+    console.log('searching')
     const db = req.app.get('db')
-    const {search} = req.query
+
+    let {search} = req.query
+
     console.log({search})
 
     db.search_all_posts({search}).then( post => {
       res.status(200).send(post)
-    })
+    }).catch(err => {
+      console.log(err)
+      res.status(501).send(err);
+    });
   }
 }
